@@ -1,9 +1,22 @@
-import React, { useState } from "react";
+import { cleanup } from "@testing-library/react";
+import React, { useEffect, useState } from "react";
 
 function Question({ question, onAnswered }) {
   const [timeRemaining, setTimeRemaining] = useState(10);
 
-  // add useEffect code
+  useEffect(() => {
+    if(timeRemaining > 0){
+      const timerID = setTimeout(() =>
+        {setTimeRemaining(timeRemaining => timeRemaining - 1)},
+        1000
+      )
+      return function cleanup() {
+        clearTimeout(timerID)
+      }
+    } else{
+      onAnswered(false);
+    }
+  })
 
   function handleAnswer(isCorrect) {
     setTimeRemaining(10);
